@@ -34,3 +34,7 @@ const RootQueryTest = new GraphQLObjectType ({
         }
     }
 })
+
+function testGit(){
+    console.log("testing 123")
+}
