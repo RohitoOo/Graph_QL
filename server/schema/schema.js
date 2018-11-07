@@ -37,4 +37,6 @@ const RootQueryTest = new GraphQLObjectType ({
 
 function masterBranchFunction(){
     console.log("testing from Master Branch")
+function testGit(){
+    console.log("testing 123")
 }
