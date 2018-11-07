@@ -10,3 +10,15 @@ const BookType = new GraphQLObjectType ({
          genre: {type: GraphQLString}
      })
 })
+
+// Where the User Can Jump in From the Front End To Grab Data 
+
+const RootQuery = new GraphQLObjectType ({
+    name: "RootQueryType",
+    fields: {
+        book: {
+            type: BookType,
+            args: { id: GraphQLString }
+        }
+    }
+})
