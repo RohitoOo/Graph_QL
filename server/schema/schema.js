@@ -22,3 +22,15 @@ const RootQuery = new GraphQLObjectType ({
         }
     }
 })
+
+// Where the User Can Jump in From the Front End To Grab Data 
+
+const RootQueryTest = new GraphQLObjectType ({
+    name: "RootQueryType",
+    fields: {
+        book: {
+            type: BookType,
+            args: { id: GraphQLString }
+        }
+    }
+})
