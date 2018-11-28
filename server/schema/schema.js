@@ -29,7 +29,7 @@ const {
 
 const Book = require('../models/book')
 
-const Author = require('../models/book')
+const Author = require('../models/author')
 
 // let authors = [
 //   { id: 1, name: "J.K.Rowling", age: 53 },
@@ -46,6 +46,7 @@ const BookType = new GraphQLObjectType({
     id: { type: GraphQLInt },
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
+    authorId: { type: GraphQLInt },
     author: {
         // Author Type Is Defined Below But It Still Works ( Reason Y We use function in fields and not just an object)
       type: AuthorType,
@@ -80,7 +81,6 @@ const RootQuery = new GraphQLObjectType({
       type: BookType,
       args: { id: { type: GraphQLInt } }, // Required To Query --> book(id:"123"){ name genre }
       resolve(parent, args) {
-        console.log({ parent });
         // code to get data from Database or any other Source
         return _.find(books, { id: args.id });
       }
@@ -107,6 +107,44 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
+const Mutation = new GraphQLObjectType({
+  name: "Mutation",
+  fields:{
+    addAuthor:{
+      type: AuthorType,
+      args:{
+        name: {type: GraphQLString},
+        age: {type: GraphQLID},
+      },
+      resolve(parent, args){
+        let author = new Author()
+        author.name= args.name,
+        author.age = args.age
+        return author.save()
+      }
+    },
+    addBook: {
+      type: BookType,
+      args: {
+       name: {type: GraphQLString},
+       genre: {type: GraphQLString},
+       authorId: {type: GraphQLInt}
+      },
+      resolve(parent, args){
+
+        let book = new Book({
+          name: args.name,
+          genre: args.genre,
+          authorId: args.authorId
+        })
+        return book.save()
+        
+      }
+    }
+  }
+})
+
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation
 });
