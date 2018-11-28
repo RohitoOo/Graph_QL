@@ -16,9 +16,9 @@ const {
 // Dummy Data
 
 let books = [
-  { id: 1, name: "Harry Porter", genre: "Fantasy" },
-  { id: 2, name: "Lord Of The Rings", genre: "Fantasy" },
-  { id: 3, name: "Don", genre: "Bollywood" }
+  { id: 1, name: "Harry Porter", genre: "Fantasy", authorId: 1 },
+  { id: 2, name: "Lord Of The Rings", genre: "Fantasy", authorId: 2 },
+  { id: 3, name: "Don", genre: "Bollywood", authorId: 3 }
 ];
 
 let authors = [
@@ -32,7 +32,14 @@ const BookType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLInt },
     name: { type: GraphQLString },
-    genre: { type: GraphQLString }
+    genre: { type: GraphQLString },
+    author: {
+      type: AuthorType,
+      resolve(parent, args) {
+        console.log({ parent })
+        return _.find(authors, { id: parent.authorId });
+      }
+    }
   })
 });
 
@@ -54,6 +61,7 @@ const RootQuery = new GraphQLObjectType({
       type: BookType,
       args: { id: { type: GraphQLInt } }, // Required To Query --> book(id:"123"){ name genre }
       resolve(parent, args) {
+        console.log({ parent });
         // code to get data from Database or any other Source
         return _.find(books, { id: args.id });
       }
