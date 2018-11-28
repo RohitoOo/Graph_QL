@@ -41,6 +41,7 @@ const BookType = new GraphQLObjectType({
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
     author: {
+        // Author Type Is Defined Below But It Still Works ( Reason Y We use function in fields and not just an object)
       type: AuthorType,
       resolve(parent, args) {
         return _.find(authors, { id: parent.authorId });
@@ -84,6 +85,18 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args) {
         return _.find(authors, { id: args.id });
       }
+    },
+    books: {
+        type: new GraphQLList(BookType),
+        resolve(parent, args){
+            return books
+        }
+    },
+    authors: {
+        type: new GraphQLList(AuthorType),
+        resolve(parent,args){
+            return authors
+        }
     }
   }
 });
