@@ -3,6 +3,7 @@ const graphqlHTTP = require("express-graphql");
 const schema = require("./schema/schema");
 const app = express();
 const mongoose  = require('mongoose')
+const cors = require('cors')
 
 // Database Connection
 
@@ -17,6 +18,11 @@ db.once( "open", () => {
 db.on('error', (err) => {
     console.log("Database Error", {err})
 })
+
+// Middleware for Cross Server Requests
+
+app.use(cors());
+
 
 // Middle Ware ( One SuperCharged Endpoint To Rule Them All )
 
